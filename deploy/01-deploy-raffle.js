@@ -53,9 +53,9 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     })
     console.log('raffle address->',raffle.address)
     // Programmatically adding a consumer for the vrfCoordinatorV2Mock
-    // if (developmentChains.includes(network.name)) {
-    //     await vrfCoordinatorV2Mock.addConsumer(subscriptionId.toNumber(), raffle.address)
-    // }
+    if (developmentChains.includes(network.name)) {
+        await vrfCoordinatorV2Mock.addConsumer(subscriptionId.toNumber(), raffle.address)
+    }
 
     // Verify the deployment
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {

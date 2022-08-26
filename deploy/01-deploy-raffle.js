@@ -30,7 +30,6 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     }
 
     // console.log('subscriptionId ->',subscriptionId.toNumber())
-  
 
     const waitBlockConfirmations = developmentChains.includes(network.name)
         ? 1
@@ -45,15 +44,17 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         networkConfig[chainId]["raffleEntranceFee"],
         networkConfig[chainId]["callbackGasLimit"],
     ]
+
     const raffle = await deploy("Raffle", {
         from: deployer,
         args: arguments,
         log: true,
         waitConfirmations: waitBlockConfirmations,
     })
-    console.log('raffle address->',raffle.address)
+
+    console.log("raffle address->", raffle.address)
     // Programmatically adding a consumer for the vrfCoordinatorV2Mock
-    if (developmentChains.includes(network.name)) {
+    if (!developmentChains.includes(network.name)) {
         await vrfCoordinatorV2Mock.addConsumer(subscriptionId.toNumber(), raffle.address)
     }
 
